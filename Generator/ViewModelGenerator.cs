@@ -22,6 +22,7 @@ namespace Generator
             {
                 @class.AddMember(CreateProperty(item.Name, "System." + item.Type));
             }
+
             foreach (var navProp in entity.NavigationProperties)
             {
                 var relationship = navProp.Relationship.Split('.').Last();
