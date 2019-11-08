@@ -9,12 +9,12 @@ namespace Generator
     {
         public void Generate(EntityType entity)
         {
-            var dataModelUnit = new CodeCompileUnit();
+            var codeCompileUnit = new CodeCompileUnit();
             var className = entity.Name;
-            var modelClass = CreateClass(className, "WebApp.Models", dataModelUnit);
+            var (@namespace,@class) = CreateClass(className, "WebApp.Models");
             foreach (var item in entity.Properties)
             {
-                modelClass.AddMember(CreateProperty(item.Name, "System." + item.Type));
+                @class.AddMember(CreateProperty(item.Name, "System." + item.Type));
             }
             foreach (var navProp in entity.NavigationProperties)
             {
@@ -22,11 +22,12 @@ namespace Generator
                 var end = entity.Associations.Single(a => a.Name == relationship)
                     .Ends.Single(e => e.Role == navProp.ToRole);
                 if (end.Multiplicity == "*")
-                    modelClass.AddMember(CreateProperty(navProp.Name, $"ICollection<{navProp.ToRole}>"));
+                    @class.AddMember(CreateProperty(navProp.Name, $"ICollection<{navProp.ToRole}>"));
                 else
-                    modelClass.AddMember(CreateProperty(navProp.Name, navProp.ToRole));
+                    @class.AddMember(CreateProperty(navProp.Name, navProp.ToRole));
             }
-            GenerateCSharpCode(className + ".cs", "Models", dataModelUnit);
+            codeCompileUnit.Namespaces.Add(@namespace);
+            GenerateCSharpCode(className + ".cs", "Models", codeCompileUnit);
         }
     }
 }

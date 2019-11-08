@@ -9,12 +9,18 @@ namespace Generator
     {
         public void Generate(EntityType entity)
         {
-            var viewModelUnit = new CodeCompileUnit();
+            GenerateViewModel(entity);
+            GenerateCompactViewModel(entity);
+        }
+
+        private static void GenerateViewModel(EntityType entity)
+        {
+            var codeCompileUnit = new CodeCompileUnit();
             var className = entity.Name + "ViewModel";
-            var viewModelClass = CreateClass(className, "WebApp.ViewModels", viewModelUnit);
+            var (@namespace,@class) = CreateClass(className, "WebApp.ViewModels");
             foreach (var item in entity.Properties)
             {
-                viewModelClass.AddMember(CreateProperty(item.Name, "System." + item.Type));
+                @class.AddMember(CreateProperty(item.Name, "System." + item.Type));
             }
             foreach (var navProp in entity.NavigationProperties)
             {
@@ -22,23 +28,25 @@ namespace Generator
                 var end = entity.Associations.Single(a => a.Name == relationship)
                     .Ends.Single(e => e.Role == navProp.ToRole);
                 if (end.Multiplicity == "*")
-                    viewModelClass.AddMember(CreateProperty(navProp.Name, $"ICollection<Compact{navProp.ToRole}ViewModel>"));
+                    @class.AddMember(CreateProperty(navProp.Name, $"ICollection<Compact{navProp.ToRole}ViewModel>"));
                 else
-                    viewModelClass.AddMember(CreateProperty(navProp.Name, "Compact"+navProp.ToRole+ "ViewModel"));
+                    @class.AddMember(CreateProperty(navProp.Name, "Compact" + navProp.ToRole + "ViewModel"));
             }
-            GenerateCSharpCode(className + ".cs", "ViewModels", viewModelUnit);
-
-            //Compact version starts here
-            var compactViewModelUnit = new CodeCompileUnit();
-            var compactClassName = "Compact" + entity.Name + "ViewModel";
-            var compactClass = CreateClass(compactClassName, "WebApp.ViewModels", compactViewModelUnit);
-            foreach (var item in entity.Properties)
-            {
-                compactClass.AddMember(CreateProperty(item.Name, "System." + item.Type));
-            }
-            GenerateCSharpCode(compactClassName+".cs", "ViewModels", compactViewModelUnit);
+            codeCompileUnit.Namespaces.Add(@namespace);
+            GenerateCSharpCode(className + ".cs", "ViewModels", codeCompileUnit);
         }
 
-        
+        private static void GenerateCompactViewModel(EntityType entity)
+        {
+            var codeCompileUnit = new CodeCompileUnit();
+            var className = "Compact" + entity.Name + "ViewModel";
+            var (ns, @class) = CreateClass(className, "WebApp.ViewModels");
+            foreach (var item in entity.Properties)
+            {
+                @class.AddMember(CreateProperty(item.Name, "System." + item.Type));
+            }
+            codeCompileUnit.Namespaces.Add(ns);
+            GenerateCSharpCode(className + ".cs", "ViewModels", codeCompileUnit);
+        }
     }
 }

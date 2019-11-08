@@ -12,19 +12,18 @@ namespace Generator
 {
     public static class CodeDomHelper
     {
-        public static CodeTypeDeclaration CreateClass(string entity, string ns, CodeCompileUnit targetUnit)
+        public static (CodeNamespace @namespace, CodeTypeDeclaration @class) CreateClass(string entity, string ns)
         {
-            CodeNamespace webAppModelsNs = new CodeNamespace(ns);
-            webAppModelsNs.Imports.Add(new CodeNamespaceImport("System"));
-            webAppModelsNs.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
-            var entityClass = new CodeTypeDeclaration(entity)
+            CodeNamespace @namespace = new CodeNamespace(ns);
+            @namespace.Imports.Add(new CodeNamespaceImport("System"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
+            var @class = new CodeTypeDeclaration(entity)
             {
                 IsClass = true,
                 TypeAttributes = TypeAttributes.Public
             };
-            webAppModelsNs.Types.Add(entityClass);
-            targetUnit.Namespaces.Add(webAppModelsNs);
-            return entityClass;
+            @namespace.Types.Add(@class);
+            return (@namespace, @class);
         }
 
         public static CodeTypeMember CreateProperty(string name, string type)
