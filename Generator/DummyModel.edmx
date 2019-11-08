@@ -24,6 +24,11 @@
             <End Role="Company" EntitySet="Companies" />
             <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
+          <EntitySet Name="Departments" EntityType="DummyModel.Department" />
+          <AssociationSet Name="DepartmentEmployee" Association="DummyModel.DepartmentEmployee">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Company">
           <Key>
@@ -53,9 +58,21 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Company" Relationship="DummyModel.CompanyEmployee" FromRole="Employee" ToRole="Company" />
           <Property Name="FirstName" Type="String" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="DummyModel.DepartmentEmployee" FromRole="Employee" ToRole="Department" />
         </EntityType>
         <Association Name="CompanyEmployee">
           <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Employees" Relationship="DummyModel.DepartmentEmployee" FromRole="Department" ToRole="Employee" />
+        </EntityType>
+        <Association Name="DepartmentEmployee">
+          <End Type="DummyModel.Department" Role="Department" Multiplicity="1" />
           <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
         </Association>
       </Schema>

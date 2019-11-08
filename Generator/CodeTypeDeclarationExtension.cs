@@ -4,9 +4,9 @@ namespace Generator
 {
     public static class CodeTypeDeclarationExtension
     {
-        public static CodeTypeDeclaration AddProperty(this CodeTypeDeclaration codeTypeDeclaration, CodeMemberProperty codeMemberProperty)
+        public static CodeTypeDeclaration AddMember(this CodeTypeDeclaration codeTypeDeclaration, CodeTypeMember codeTypeMember)
         {
-            codeTypeDeclaration.Members.Add(codeMemberProperty);
+            codeTypeDeclaration.Members.Add(codeTypeMember);
             return codeTypeDeclaration;
         }
     }

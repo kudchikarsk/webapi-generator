@@ -20,7 +20,7 @@ namespace Generator
             var modelClass = CreateClass(className, "WebApp.Models", dataModelUnit);
             foreach (var item in entity.Properties)
             {
-                modelClass.AddProperty(CreateProperty(item.Name, "System." + item.Type));
+                modelClass.AddMember(CreateProperty(item.Name, "System." + item.Type));
             }
             foreach (var navProp in entity.NavigationProperties)
             {
@@ -28,9 +28,9 @@ namespace Generator
                 var end = entity.Associations.Single(a => a.Name == relationship)
                     .Ends.Single(e => e.Role == navProp.ToRole);
                 if (end.Multiplicity == "*")
-                    modelClass.AddProperty(CreateProperty(navProp.Name, $"ICollection<{navProp.ToRole}>"));
+                    modelClass.AddMember(CreateProperty(navProp.Name, $"ICollection<{navProp.ToRole}>"));
                 else
-                    modelClass.AddProperty(CreateProperty(navProp.Name, navProp.ToRole));
+                    modelClass.AddMember(CreateProperty(navProp.Name, navProp.ToRole));
             }
             GenerateCSharpCode(className + ".cs", "Models", dataModelUnit);
         }
@@ -50,15 +50,12 @@ namespace Generator
             return entityClass;
         }
 
-        private CodeMemberProperty CreateProperty(string name, string type)
+        private CodeMemberField CreateProperty(string name, string type)
         {
-            return new CodeMemberProperty
+            return new CodeMemberField()
             {
-                Attributes =
-                MemberAttributes.Public | MemberAttributes.Final,
-                Name = name,
-                HasGet = true,
-                HasSet = true,
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                Name = name + " { get; set; }",
                 Type = new CodeTypeReference(type)
             };
         }

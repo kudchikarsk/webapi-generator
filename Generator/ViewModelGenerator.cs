@@ -20,7 +20,7 @@ namespace Generator
             var viewModelClass = CreateClass(className, "WebApp.ViewModels", viewModelUnit);
             foreach (var item in entity.Properties)
             {
-                viewModelClass.AddProperty(CreateProperty(item.Name, "System." + item.Type));
+                viewModelClass.AddMember(CreateProperty(item.Name, "System." + item.Type));
             }
             foreach (var navProp in entity.NavigationProperties)
             {
@@ -28,9 +28,9 @@ namespace Generator
                 var end = entity.Associations.Single(a => a.Name == relationship)
                     .Ends.Single(e => e.Role == navProp.ToRole);
                 if (end.Multiplicity == "*")
-                    viewModelClass.AddProperty(CreateProperty(navProp.Name, $"ICollection<Compact{navProp.ToRole}ViewModel>"));
+                    viewModelClass.AddMember(CreateProperty(navProp.Name, $"ICollection<Compact{navProp.ToRole}ViewModel>"));
                 else
-                    viewModelClass.AddProperty(CreateProperty(navProp.Name, "Compact"+navProp.ToRole+ "ViewModel"));
+                    viewModelClass.AddMember(CreateProperty(navProp.Name, "Compact"+navProp.ToRole+ "ViewModel"));
             }
             GenerateCSharpCode(className + ".cs", "ViewModels", viewModelUnit);
 
@@ -40,7 +40,7 @@ namespace Generator
             var compactClass = CreateClass(compactClassName, "WebApp.ViewModels", compactViewModelUnit);
             foreach (var item in entity.Properties)
             {
-                compactClass.AddProperty(CreateProperty(item.Name, "System." + item.Type));
+                compactClass.AddMember(CreateProperty(item.Name, "System." + item.Type));
             }
             GenerateCSharpCode(compactClassName+".cs", "ViewModels", compactViewModelUnit);
         }
@@ -60,15 +60,13 @@ namespace Generator
             return entityClass;
         }
 
-        private CodeMemberProperty CreateProperty(string name, string type)
+        private CodeTypeMember CreateProperty(string name, string type)
         {
-            return new CodeMemberProperty
+            return new CodeMemberField
             {
                 Attributes =
                 MemberAttributes.Public | MemberAttributes.Final,
-                Name = name,
-                HasGet = true,
-                HasSet = true,
+                Name = name + " { get; set; }",
                 Type = new CodeTypeReference(type)
             };
         }
