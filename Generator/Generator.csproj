@@ -149,6 +149,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeDomHelper.cs" />
     <Compile Include="CodeTypeDeclarationExtension.cs" />
     <Compile Include="DataModelGenerator.cs" />
     <Compile Include="DummyModel.Designer.cs">
