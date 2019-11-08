@@ -27,6 +27,7 @@ namespace Generator
                     @class.AddMember(CreateProperty(navProp.Name, navProp.ToRole));
             }
             codeCompileUnit.Namespaces.Add(@namespace);
+            codeCompileUnit.ReferencedAssemblies.Add("System.Collections.Generic");
             GenerateCSharpCode(className + ".cs", "Models", codeCompileUnit);
         }
     }

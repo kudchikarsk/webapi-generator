@@ -28,13 +28,31 @@ namespace Generator
 
         public static CodeTypeMember CreateProperty(string name, string type)
         {
-            return new CodeMemberField
+            var field = new CodeMemberField()
             {
-                Attributes =
-                MemberAttributes.Public | MemberAttributes.Final,
-                Name = name + " { get; set; }",
+                Name = "_" + name,
+                Type = new CodeTypeReference(type),
+                Attributes = MemberAttributes.Private
+            };
+
+            var prop = new CodeMemberProperty
+            {
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                Name = name,
                 Type = new CodeTypeReference(type)
             };
+
+            prop.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeFieldReferenceExpression(
+                        new CodeThisReferenceExpression(), "_" + name)));
+            prop.SetStatements.Add(
+                new CodeAssignStatement(
+                    new CodeFieldReferenceExpression(
+                        new CodeThisReferenceExpression(), "_" + name),
+                    new CodePropertySetValueReferenceExpression()));
+
+            return prop;
         }
 
         public static void GenerateCSharpCode(string fileName, string folder, CodeCompileUnit targetUnit)

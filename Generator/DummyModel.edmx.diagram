@@ -5,13 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0c26047b54b24c00aec58149f36eb217" Name="Diagram1" >
-        <EntityTypeShape EntityType="DummyModel.Company" Width="1.5" PointX="1.625" PointY="0.875" />
-        <EntityTypeShape EntityType="DummyModel.Room" Width="1.375" PointX="4.125" PointY="0.875" />
+        <EntityTypeShape EntityType="DummyModel.Company" Width="1.5" PointX="1.5" PointY="0.5" />
+        <EntityTypeShape EntityType="DummyModel.Room" Width="1.375" PointX="5.875" PointY="0.5" />
         <AssociationConnector Association="DummyModel.CompanyRoom" />
         <EntityTypeShape EntityType="DummyModel.Employee" Width="1.5" PointX="1.5" PointY="3.125" />
         <AssociationConnector Association="DummyModel.CompanyEmployee" />
-        <EntityTypeShape EntityType="DummyModel.Department" Width="1.5" PointX="4.25" PointY="3.125" />
+        <EntityTypeShape EntityType="DummyModel.Department" Width="1.5" PointX="4.25" PointY="2.375" />
         <AssociationConnector Association="DummyModel.DepartmentEmployee" />
+        <EntityTypeShape EntityType="DummyModel.Branch" Width="1.5" PointX="4.625" PointY="4.5" />
+        <AssociationConnector Association="DummyModel.BranchEmployee" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

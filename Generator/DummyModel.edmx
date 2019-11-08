@@ -29,6 +29,11 @@
             <End Role="Department" EntitySet="Departments" />
             <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
+          <EntitySet Name="Branches" EntityType="DummyModel.Branch" />
+          <AssociationSet Name="BranchEmployee" Association="DummyModel.BranchEmployee">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Company">
           <Key>
@@ -59,6 +64,7 @@
           <NavigationProperty Name="Company" Relationship="DummyModel.CompanyEmployee" FromRole="Employee" ToRole="Company" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <NavigationProperty Name="Department" Relationship="DummyModel.DepartmentEmployee" FromRole="Employee" ToRole="Department" />
+          <NavigationProperty Name="Branch" Relationship="DummyModel.BranchEmployee" FromRole="Employee" ToRole="Branch" />
         </EntityType>
         <Association Name="CompanyEmployee">
           <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
@@ -70,9 +76,22 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Employees" Relationship="DummyModel.DepartmentEmployee" FromRole="Department" ToRole="Employee" />
+          <Property Name="Name" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="DepartmentEmployee">
           <End Type="DummyModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Employees" Relationship="DummyModel.BranchEmployee" FromRole="Branch" ToRole="Employee" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="BranchEmployee">
+          <End Type="DummyModel.Branch" Role="Branch" Multiplicity="1" />
           <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
         </Association>
       </Schema>
