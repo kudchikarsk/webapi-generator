@@ -10,6 +10,7 @@ using System.CodeDom;
 using System.Reflection;
 using System.CodeDom.Compiler;
 using EdmxParser;
+using Microsoft.Build.Evaluation;
 
 namespace Generator
 {
@@ -17,6 +18,9 @@ namespace Generator
     {
         static void Main(string[] args)
         {
+            var projectPath = @"D:\Test\TestWebSolution\WebApplication\WebApplication\WebApplication.csproj";            
+            var proj = new Project(projectPath, null, "4.0");
+
             var filename = "DummyModel.edmx";
             var currentDirectory = Directory.GetCurrentDirectory();
             var dataModelFilePath = Path.Combine(currentDirectory, filename);
@@ -24,8 +28,8 @@ namespace Generator
             XDocument root = XDocument.Load(dataModelFilePath);
             var entites = EdmxConverter.ParseEntites(root);
             var generators = new List<IGenerator>() {
-                new DataModelGenerator(),
-                new ViewModelGenerator()
+                new DataModelGenerator(proj),
+                new ViewModelGenerator(proj)
             };
             foreach (var entity in entites)
             {
@@ -34,6 +38,9 @@ namespace Generator
                     generator.Generate(entity);
                 }
             }
+
+
+            proj.Save();
             Console.WriteLine("Program terminated!");
             Console.ReadKey();
         }

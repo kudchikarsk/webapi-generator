@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Gene
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdmxParser", "EdmxParser\EdmxParser.csproj", "{3157B2A7-5BE2-453E-8006-138290647EC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestOutput", "TestOutput\TestOutput.csproj", "{07932752-A27F-4F4B-8F5B-651AAC893F38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{0E98B5C7-9FBB-4336-95D0-A777D92839D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{3157B2A7-5BE2-453E-8006-138290647EC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3157B2A7-5BE2-453E-8006-138290647EC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3157B2A7-5BE2-453E-8006-138290647EC9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07932752-A27F-4F4B-8F5B-651AAC893F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07932752-A27F-4F4B-8F5B-651AAC893F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07932752-A27F-4F4B-8F5B-651AAC893F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07932752-A27F-4F4B-8F5B-651AAC893F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E98B5C7-9FBB-4336-95D0-A777D92839D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E98B5C7-9FBB-4336-95D0-A777D92839D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E98B5C7-9FBB-4336-95D0-A777D92839D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E98B5C7-9FBB-4336-95D0-A777D92839D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

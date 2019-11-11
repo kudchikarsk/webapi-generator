@@ -1,19 +1,28 @@
 ﻿using System.CodeDom;
+using System.IO;
 using System.Linq;
 using EdmxParser;
+using Microsoft.Build.Evaluation;
 using static Generator.CodeDomHelper;
 
 namespace Generator
 {
     public class ViewModelGenerator : IGenerator
     {
+        private readonly Project proj;
+
+        public ViewModelGenerator(Project proj)
+        {
+            this.proj = proj;
+        }
+
         public void Generate(EntityType entity)
         {
             GenerateViewModel(entity);
             GenerateCompactViewModel(entity);
         }
 
-        private static void GenerateViewModel(EntityType entity)
+        private void GenerateViewModel(EntityType entity)
         {
             var codeCompileUnit = new CodeCompileUnit();
             var className = entity.Name + "ViewModel";
@@ -44,10 +53,15 @@ namespace Generator
                 }
             }
             codeCompileUnit.Namespaces.Add(@namespace);
-            GenerateCSharpCode(className + ".cs", "ViewModels", codeCompileUnit);
+
+            var fileName = className + ".cs";
+            var folder = "ViewModels";
+            GenerateCSharpCode(fileName, folder, codeCompileUnit);
+            proj.RemoveItems(proj.GetItemsByEvaluatedInclude(Path.Combine(folder, fileName)));
+            proj.AddItem("Compile", Path.Combine(folder, fileName));
         }
 
-        private static void GenerateCompactViewModel(EntityType entity)
+        private void GenerateCompactViewModel(EntityType entity)
         {
             var codeCompileUnit = new CodeCompileUnit();
             var className = "Compact" + entity.Name + "ViewModel";
@@ -59,7 +73,12 @@ namespace Generator
                 @class.AddMember(prop);
             }
             codeCompileUnit.Namespaces.Add(ns);
-            GenerateCSharpCode(className + ".cs", "ViewModels", codeCompileUnit);
+
+            var fileName = className + ".cs";
+            var folder = "ViewModels";
+            GenerateCSharpCode(fileName, folder, codeCompileUnit);
+            proj.RemoveItems(proj.GetItemsByEvaluatedInclude(Path.Combine(folder, fileName)));
+            proj.AddItem("Compile", Path.Combine(folder, fileName));
         }
     }
 }

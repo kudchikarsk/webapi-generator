@@ -1,12 +1,21 @@
 ﻿using System.CodeDom;
+using System.IO;
 using System.Linq;
 using EdmxParser;
+using Microsoft.Build.Evaluation;
 using static Generator.CodeDomHelper;
 
 namespace Generator
 {
     public class DataModelGenerator : IGenerator
     {
+        private readonly Project proj;        
+
+        public DataModelGenerator(Project proj)
+        {
+            this.proj = proj;
+        }
+
         public void Generate(EntityType entity)
         {
             var codeCompileUnit = new CodeCompileUnit();
@@ -37,8 +46,12 @@ namespace Generator
                 }
             }
             codeCompileUnit.Namespaces.Add(@namespace);
-            codeCompileUnit.ReferencedAssemblies.Add("System.Collections.Generic");
-            GenerateCSharpCode(className + ".cs", "Models", codeCompileUnit);
+
+            var fileName = className + ".cs";
+            var folder = "Models";
+            GenerateCSharpCode(fileName, folder, codeCompileUnit);
+            proj.RemoveItems(proj.GetItemsByEvaluatedInclude(Path.Combine(folder, fileName)));
+            proj.AddItem("Compile", Path.Combine(folder, fileName));
         }
     }
 }

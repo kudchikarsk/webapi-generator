@@ -12,7 +12,7 @@ namespace Generator
 {
     public static class CodeDomHelper
     {
-        public static (CodeNamespace @namespace, CodeTypeDeclaration @class) CreateClass(string entity, string ns)
+        public static (CodeNamespace @namespace, CodeTypeDeclaration @class) CreateClass(string entity, string ns, bool isPartial = true)
         {
             CodeNamespace @namespace = new CodeNamespace(ns);
             @namespace.Imports.Add(new CodeNamespaceImport("System"));
@@ -20,7 +20,8 @@ namespace Generator
             var @class = new CodeTypeDeclaration(entity)
             {
                 IsClass = true,
-                TypeAttributes = TypeAttributes.Public
+                TypeAttributes = TypeAttributes.Public,
+                IsPartial = isPartial
             };
             @namespace.Types.Add(@class);
             return (@namespace, @class);
