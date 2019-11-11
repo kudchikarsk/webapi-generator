@@ -17,12 +17,60 @@ namespace WebApp.Models
     public class Company
     {
         
-        public long Id;
+        private long _Id;
         
-        public string Name;
+        private string _Name;
         
-        public ICollection<Room> Rooms;
+        private ICollection<Room> _Rooms;
         
-        public ICollection<Employee> Employees;
+        private ICollection<Employee> _Employees;
+        
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
+        
+        public ICollection<Room> Rooms
+        {
+            get
+            {
+                return this._Rooms;
+            }
+            set
+            {
+                this._Rooms = value;
+            }
+        }
+        
+        public ICollection<Employee> Employees
+        {
+            get
+            {
+                return this._Employees;
+            }
+            set
+            {
+                this._Employees = value;
+            }
+        }
     }
 }

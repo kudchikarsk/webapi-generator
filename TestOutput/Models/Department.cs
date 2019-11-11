@@ -17,8 +17,46 @@ namespace WebApp.Models
     public class Department
     {
         
-        public int Id;
+        private int _Id;
         
-        public ICollection<Employee> Employees;
+        private int _Name;
+        
+        private ICollection<Employee> _Employees;
+        
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public int Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
+        
+        public ICollection<Employee> Employees
+        {
+            get
+            {
+                return this._Employees;
+            }
+            set
+            {
+                this._Employees = value;
+            }
+        }
     }
 }

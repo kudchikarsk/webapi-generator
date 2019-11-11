@@ -14,16 +14,16 @@ namespace WebApp.Models
     using System.Collections.Generic;
     
     
-    public class Room
+    public class Branch
     {
         
-        private long _Id;
+        private int _Id;
         
         private string _Name;
         
-        private Company _Company;
+        private ICollection<Employee> _Employees;
         
-        public long Id
+        public int Id
         {
             get
             {
@@ -47,15 +47,15 @@ namespace WebApp.Models
             }
         }
         
-        public Company Company
+        public ICollection<Employee> Employees
         {
             get
             {
-                return this._Company;
+                return this._Employees;
             }
             set
             {
-                this._Company = value;
+                this._Employees = value;
             }
         }
     }

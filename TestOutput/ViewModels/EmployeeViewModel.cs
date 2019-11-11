@@ -17,12 +17,74 @@ namespace WebApp.ViewModels
     public class EmployeeViewModel
     {
         
-        public int Id;
+        private int _Id;
         
-        public string FirstName;
+        private string _FirstName;
         
-        public CompactCompanyViewModel Company;
+        private CompactCompanyViewModel _Company;
         
-        public CompactDepartmentViewModel Department;
+        private CompactDepartmentViewModel _Department;
+        
+        private CompactBranchViewModel _Branch;
+        
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string FirstName
+        {
+            get
+            {
+                return this._FirstName;
+            }
+            set
+            {
+                this._FirstName = value;
+            }
+        }
+        
+        public CompactCompanyViewModel Company
+        {
+            get
+            {
+                return this._Company;
+            }
+            set
+            {
+                this._Company = value;
+            }
+        }
+        
+        public CompactDepartmentViewModel Department
+        {
+            get
+            {
+                return this._Department;
+            }
+            set
+            {
+                this._Department = value;
+            }
+        }
+        
+        public CompactBranchViewModel Branch
+        {
+            get
+            {
+                return this._Branch;
+            }
+            set
+            {
+                this._Branch = value;
+            }
+        }
     }
 }

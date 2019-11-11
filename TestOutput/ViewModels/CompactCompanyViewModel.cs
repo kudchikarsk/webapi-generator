@@ -17,8 +17,32 @@ namespace WebApp.ViewModels
     public class CompactCompanyViewModel
     {
         
-        public long Id;
+        private long _Id;
         
-        public string Name;
+        private string _Name;
+        
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
     }
 }

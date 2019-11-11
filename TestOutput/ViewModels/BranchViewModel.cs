@@ -8,22 +8,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApp.Models
+namespace WebApp.ViewModels
 {
     using System;
     using System.Collections.Generic;
     
     
-    public class Room
+    public class BranchViewModel
     {
         
-        private long _Id;
+        private int _Id;
         
         private string _Name;
         
-        private Company _Company;
+        private ICollection<CompactEmployeeViewModel> _Employees;
         
-        public long Id
+        public int Id
         {
             get
             {
@@ -47,15 +47,15 @@ namespace WebApp.Models
             }
         }
         
-        public Company Company
+        public ICollection<CompactEmployeeViewModel> Employees
         {
             get
             {
-                return this._Company;
+                return this._Employees;
             }
             set
             {
-                this._Company = value;
+                this._Employees = value;
             }
         }
     }

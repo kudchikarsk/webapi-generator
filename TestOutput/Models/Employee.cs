@@ -17,12 +17,74 @@ namespace WebApp.Models
     public class Employee
     {
         
-        public int Id;
+        private int _Id;
         
-        public string FirstName;
+        private string _FirstName;
         
-        public Company Company;
+        private Company _Company;
         
-        public Department Department;
+        private Department _Department;
+        
+        private Branch _Branch;
+        
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string FirstName
+        {
+            get
+            {
+                return this._FirstName;
+            }
+            set
+            {
+                this._FirstName = value;
+            }
+        }
+        
+        public Company Company
+        {
+            get
+            {
+                return this._Company;
+            }
+            set
+            {
+                this._Company = value;
+            }
+        }
+        
+        public Department Department
+        {
+            get
+            {
+                return this._Department;
+            }
+            set
+            {
+                this._Department = value;
+            }
+        }
+        
+        public Branch Branch
+        {
+            get
+            {
+                return this._Branch;
+            }
+            set
+            {
+                this._Branch = value;
+            }
+        }
     }
 }

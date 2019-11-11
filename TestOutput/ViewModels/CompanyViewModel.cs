@@ -17,12 +17,60 @@ namespace WebApp.ViewModels
     public class CompanyViewModel
     {
         
-        public long Id;
+        private long _Id;
         
-        public string Name;
+        private string _Name;
         
-        public ICollection<CompactRoomViewModel> Rooms;
+        private ICollection<CompactRoomViewModel> _Rooms;
         
-        public ICollection<CompactEmployeeViewModel> Employees;
+        private ICollection<CompactEmployeeViewModel> _Employees;
+        
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
+        
+        public ICollection<CompactRoomViewModel> Rooms
+        {
+            get
+            {
+                return this._Rooms;
+            }
+            set
+            {
+                this._Rooms = value;
+            }
+        }
+        
+        public ICollection<CompactEmployeeViewModel> Employees
+        {
+            get
+            {
+                return this._Employees;
+            }
+            set
+            {
+                this._Employees = value;
+            }
+        }
     }
 }

@@ -17,8 +17,46 @@ namespace WebApp.ViewModels
     public class DepartmentViewModel
     {
         
-        public int Id;
+        private int _Id;
         
-        public ICollection<CompactEmployeeViewModel> Employees;
+        private int _Name;
+        
+        private ICollection<CompactEmployeeViewModel> _Employees;
+        
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public int Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
+        
+        public ICollection<CompactEmployeeViewModel> Employees
+        {
+            get
+            {
+                return this._Employees;
+            }
+            set
+            {
+                this._Employees = value;
+            }
+        }
     }
 }

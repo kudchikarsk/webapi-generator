@@ -14,7 +14,9 @@ namespace Generator
             var (@namespace,@class) = CreateClass(className, "WebApp.Models");
             foreach (var item in entity.Properties)
             {
-                @class.AddMember(CreateProperty(item.Name, "System." + item.Type));
+               var (field, prop) =  CreateProperty(item.Name, "System." + item.Type);
+                @class.AddMember(field);
+                @class.AddMember(prop);
             }
             foreach (var navProp in entity.NavigationProperties)
             {
@@ -22,9 +24,17 @@ namespace Generator
                 var end = entity.Associations.Single(a => a.Name == relationship)
                     .Ends.Single(e => e.Role == navProp.ToRole);
                 if (end.Multiplicity == "*")
-                    @class.AddMember(CreateProperty(navProp.Name, $"ICollection<{navProp.ToRole}>"));
+                {
+                    var (field, prop) = CreateProperty(navProp.Name, $"ICollection<{navProp.ToRole}>");
+                    @class.AddMember(field);
+                    @class.AddMember(prop);
+                }
                 else
-                    @class.AddMember(CreateProperty(navProp.Name, navProp.ToRole));
+                {
+                    var (field, prop) = CreateProperty(navProp.Name, navProp.ToRole);
+                    @class.AddMember(field);
+                    @class.AddMember(prop);
+                }
             }
             codeCompileUnit.Namespaces.Add(@namespace);
             codeCompileUnit.ReferencedAssemblies.Add("System.Collections.Generic");

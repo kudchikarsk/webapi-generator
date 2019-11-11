@@ -17,10 +17,46 @@ namespace WebApp.ViewModels
     public class RoomViewModel
     {
         
-        public long Id;
+        private long _Id;
         
-        public string Name;
+        private string _Name;
         
-        public CompactCompanyViewModel Company;
+        private CompactCompanyViewModel _Company;
+        
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
+        
+        public CompactCompanyViewModel Company
+        {
+            get
+            {
+                return this._Company;
+            }
+            set
+            {
+                this._Company = value;
+            }
+        }
     }
 }

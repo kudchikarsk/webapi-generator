@@ -17,6 +17,32 @@ namespace WebApp.ViewModels
     public class CompactDepartmentViewModel
     {
         
-        public int Id;
+        private int _Id;
+        
+        private int _Name;
+        
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public int Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this._Name = value;
+            }
+        }
     }
 }

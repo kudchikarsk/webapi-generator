@@ -17,8 +17,32 @@ namespace WebApp.ViewModels
     public class CompactEmployeeViewModel
     {
         
-        public int Id;
+        private int _Id;
         
-        public string FirstName;
+        private string _FirstName;
+        
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this._Id = value;
+            }
+        }
+        
+        public string FirstName
+        {
+            get
+            {
+                return this._FirstName;
+            }
+            set
+            {
+                this._FirstName = value;
+            }
+        }
     }
 }

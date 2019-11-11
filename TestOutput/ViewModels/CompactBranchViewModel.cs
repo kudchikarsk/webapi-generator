@@ -8,22 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebApp.Models
+namespace WebApp.ViewModels
 {
     using System;
     using System.Collections.Generic;
     
     
-    public class Room
+    public class CompactBranchViewModel
     {
         
-        private long _Id;
+        private int _Id;
         
         private string _Name;
         
-        private Company _Company;
-        
-        public long Id
+        public int Id
         {
             get
             {
@@ -44,18 +42,6 @@ namespace WebApp.Models
             set
             {
                 this._Name = value;
-            }
-        }
-        
-        public Company Company
-        {
-            get
-            {
-                return this._Company;
-            }
-            set
-            {
-                this._Company = value;
             }
         }
     }

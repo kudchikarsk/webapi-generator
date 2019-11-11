@@ -26,7 +26,7 @@ namespace Generator
             return (@namespace, @class);
         }
 
-        public static CodeTypeMember CreateProperty(string name, string type)
+        public static (CodeTypeMember field, CodeTypeMember prop) CreateProperty(string name, string type)
         {
             var field = new CodeMemberField()
             {
@@ -52,7 +52,9 @@ namespace Generator
                         new CodeThisReferenceExpression(), "_" + name),
                     new CodePropertySetValueReferenceExpression()));
 
-            return prop;
+            
+
+            return (field, prop);
         }
 
         public static void GenerateCSharpCode(string fileName, string folder, CodeCompileUnit targetUnit)
