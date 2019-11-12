@@ -10,7 +10,9 @@ using System.CodeDom;
 using System.Reflection;
 using System.CodeDom.Compiler;
 using EdmxParser;
-using Microsoft.Build.Evaluation;
+using Generator.DefaultRegistryGenerator;
+using Generator.ModelGenerator;
+using Generator.ControllerGenerator;
 
 namespace Generator
 {
@@ -18,29 +20,39 @@ namespace Generator
     {
         static void Main(string[] args)
         {
-            var projectPath = @"D:\Test\TestWebSolution\WebApplication\WebApplication\WebApplication.csproj";            
-            var proj = new Project(projectPath, null, "4.0");
-
+            var projectPath = @"D:\Test\TestWebSolution\WebApplication\WebApplication\";
+            var csProjPath = Path.Combine(projectPath, @"WebApplication.csproj");            
+            var proj = XDocument.Load(csProjPath);
             var filename = "DummyModel.edmx";
             var currentDirectory = Directory.GetCurrentDirectory();
             var dataModelFilePath = Path.Combine(currentDirectory, filename);
             var file = File.ReadAllText(dataModelFilePath);
             XDocument root = XDocument.Load(dataModelFilePath);
-            var entites = EdmxConverter.ParseEntites(root);
+            var entities = EdmxConverter.ParseEntites(root);
             var generators = new List<IGenerator>() {
-                new DataModelGenerator(proj),
-                new ViewModelGenerator(proj)
+                new BaseModelGenerator(proj),
+                new BaseControllerGenerator(proj)
             };
-            foreach (var entity in entites)
+
+            var entitesGenerator = new List<IEntitiesGenerator>()
+            {
+                new BaseDefaultRegistryGenerator(proj)
+            };
+
+            foreach (var entity in entities)
             {
                 foreach (var generator in generators)
                 {
-                    generator.Generate(entity);
+                    generator.Generate(entity, projectPath);
                 }
             }
 
+            foreach (var generator in entitesGenerator)
+            {
+                generator.Generate(entities, projectPath);
+            }
 
-            proj.Save();
+            proj.Save(csProjPath);
             Console.WriteLine("Program terminated!");
             Console.ReadKey();
         }

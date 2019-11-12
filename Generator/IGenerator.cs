@@ -5,6 +5,6 @@ namespace Generator
 {
     public interface IGenerator
     {
-        void Generate(EntityType entity);
+        void Generate(EntityType entity, string projectPath);
     }
 }

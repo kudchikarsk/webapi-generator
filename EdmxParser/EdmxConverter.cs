@@ -22,7 +22,13 @@ namespace EdmxParser
                 var props = entity.Descendants(ns + "Property")
                     .Select(x=>x.ToProperty());
                 var navProps = entity.Descendants(ns + "NavigationProperty")
-                    .Select(x => x.ToNavigationProperty());
+                    .Select(x => x.ToNavigationProperty(
+                        association
+                        .FirstOrDefault(a=> x.AttributeValue("Relationship").Contains(a.Name))
+                        .Ends
+                        .FirstOrDefault(e=>e.Role==x.AttributeValue("ToRole")).Multiplicity
+                      )
+                   );
 
                 parsedEntities.Add(
                     new EntityType(

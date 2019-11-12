@@ -1,0 +1,118 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using WebApplication;
+
+namespace WebApplication.Models
+{
+    public class {{ entity_name }} :Entity<long>
+    {
+        {{ for $property in properties }}
+		public {{ $property.type }} {{ $property.name }} { get; set; }
+		{{ end }}
+
+		{{ for $property in nav_properties }}
+			{{ if $property.multiplicity == "*"}}
+		public ICollection<{{ $property.to_role }}> {{ $property.name }} { get; set; }
+			{{ else }}
+		public {{ $property.to_role }} {{ $property.name }} { get; set; }
+		public long {{ $property.name }}Id { get; set; }
+			{{ end }}
+		{{ end }}
+
+        public {{ entity_name }}()
+        {
+			
+        }
+
+        public static {{ entity_name }} Create(Create{{ entity_name }} value)
+        {
+
+            return new {{ entity_name }}()
+            {
+				{{ for $property in properties }}
+			{{ $property.name }} = value.{{ $property.name }},
+				{{ end }}
+
+				{{ for $property in nav_properties }}
+					{{ if $property.multiplicity != "*"}}
+			{{ $property.name }}Id = value.{{ $property.name }}.Id,
+					{{ end }}
+				{{ end }}
+
+            };
+            
+        }
+
+        public void Update(Update{{ entity_name }} value)
+        {
+
+				{{ for $property in properties }}
+			{{ $property.name }} = value.{{ $property.name }};
+				{{ end }}
+
+				{{ for $property in nav_properties }}
+					{{ if $property.multiplicity != "*"}}
+			{{ $property.name }}Id = value.{{ $property.name }}.Id;
+					{{ end }}
+				{{ end }}
+
+        }
+
+
+    }
+
+
+    
+
+    public class Create{{ entity_name }}
+    {
+		{{ for $property in properties }}
+		public {{ $property.type }} {{ $property.name }} { get; set; }
+		{{ end }}
+
+		{{ for $property in nav_properties }}
+			{{ if $property.multiplicity != "*"}}
+		public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
+			{{ end }}
+		{{ end }}
+    }
+
+	public class Update{{ entity_name }}
+    {       
+		{{ for $property in properties }}
+		public {{ $property.type }} {{ $property.name }} { get; set; }
+		{{ end }}
+
+		{{ for $property in nav_properties }}
+			{{ if $property.multiplicity != "*"}}
+		public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
+			{{ end }}
+		{{ end }}
+    }
+
+
+    public class Get{{ entity_name }}
+    {
+       {{ for $property in properties }}
+		public {{ $property.type }} {{ $property.name }} { get; set; }
+		{{ end }}
+
+		{{ for $property in nav_properties }}
+			{{ if $property.multiplicity == "*"}}
+		public ICollection<Compact{{ $property.to_role }}> {{ $property.name }} { get; set; }
+			{{ else }}
+		public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
+			{{ end }}
+		{{ end }}
+    }
+
+    public class Compact{{ entity_name }}
+    {
+        {{ for $property in properties }}
+		public {{ $property.type }} {{ $property.name }} { get; set; }
+		{{ end }}
+    }
+
+}

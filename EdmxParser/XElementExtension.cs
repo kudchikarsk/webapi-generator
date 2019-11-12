@@ -14,13 +14,14 @@ namespace EdmxParser
                 );
         }
 
-        public static NavigationProperty ToNavigationProperty(this XElement xElement)
+        public static NavigationProperty ToNavigationProperty(this XElement xElement,string multiplicity)
         {
             return new NavigationProperty(
                 xElement.AttributeValue("Name"),
                 xElement.AttributeValue("FromRole"),
                 xElement.AttributeValue("ToRole"),
-                xElement.AttributeValue("Relationship")
+                xElement.AttributeValue("Relationship"),
+                multiplicity
                 );
         }
 

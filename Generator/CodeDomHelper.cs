@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -73,6 +75,14 @@ namespace Generator
                 provider.GenerateCodeFromCompileUnit(
                     targetUnit, sourceWriter, options);
             }
+        }
+
+        public static string ArrangeUsingRoslyn(string csCode)
+        {
+            var tree = CSharpSyntaxTree.ParseText(csCode);
+            var root = tree.GetRoot().NormalizeWhitespace();
+            var ret = root.ToFullString();
+            return ret;
         }
     }
 }
