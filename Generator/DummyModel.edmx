@@ -34,6 +34,11 @@
             <End Role="Branch" EntitySet="Branches" />
             <End Role="Employee" EntitySet="Employees" />
           </AssociationSet>
+          <EntitySet Name="Tickets" EntityType="DummyModel.Ticket" />
+          <AssociationSet Name="TicketEmployee" Association="DummyModel.TicketEmployee">
+            <End Role="Ticket" EntitySet="Tickets" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Company">
           <Key>
@@ -51,6 +56,7 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Company" Relationship="DummyModel.CompanyRoom" FromRole="Room" ToRole="Company" />
           <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="CompanyRoom">
           <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
@@ -65,6 +71,7 @@
           <Property Name="FirstName" Type="String" Nullable="false" />
           <NavigationProperty Name="Department" Relationship="DummyModel.DepartmentEmployee" FromRole="Employee" ToRole="Department" />
           <NavigationProperty Name="Branch" Relationship="DummyModel.BranchEmployee" FromRole="Employee" ToRole="Branch" />
+          <NavigationProperty Name="Ticket" Relationship="DummyModel.TicketEmployee" FromRole="Employee" ToRole="Ticket" />
         </EntityType>
         <Association Name="CompanyEmployee">
           <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
@@ -93,6 +100,17 @@
         <Association Name="BranchEmployee">
           <End Type="DummyModel.Branch" Role="Branch" Multiplicity="1" />
           <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Employee" Relationship="DummyModel.TicketEmployee" FromRole="Ticket" ToRole="Employee" />
+        </EntityType>
+        <Association Name="TicketEmployee">
+          <End Type="DummyModel.Ticket" Role="Ticket" Multiplicity="1" />
+          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>

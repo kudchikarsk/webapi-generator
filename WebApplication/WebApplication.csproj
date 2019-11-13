@@ -156,6 +156,8 @@
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Models\Branch.cs" />
     <Compile Include="Controllers\BranchController.cs" />
+    <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Controllers\TicketController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">

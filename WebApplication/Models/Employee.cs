@@ -56,6 +56,18 @@ namespace WebApplication.Models
             set;
         }
 
+        public Ticket Ticket
+        {
+            get;
+            set;
+        }
+
+        public long TicketId
+        {
+            get;
+            set;
+        }
+
         public Employee()
         {
         }
@@ -63,7 +75,7 @@ namespace WebApplication.Models
         public static Employee Create(CreateEmployee value)
         {
             return new Employee()
-            {Id = value.Id, FirstName = value.FirstName, CompanyId = value.Company.Id, DepartmentId = value.Department.Id, BranchId = value.Branch.Id, };
+            {Id = value.Id, FirstName = value.FirstName, CompanyId = value.Company.Id, DepartmentId = value.Department.Id, BranchId = value.Branch.Id, TicketId = value.Ticket.Id, };
         }
 
         public void Update(UpdateEmployee value)
@@ -73,6 +85,7 @@ namespace WebApplication.Models
             CompanyId = value.Company.Id;
             DepartmentId = value.Department.Id;
             BranchId = value.Branch.Id;
+            TicketId = value.Ticket.Id;
         }
     }
 
@@ -103,6 +116,12 @@ namespace WebApplication.Models
         }
 
         public CompactBranch Branch
+        {
+            get;
+            set;
+        }
+
+        public CompactTicket Ticket
         {
             get;
             set;
@@ -140,6 +159,12 @@ namespace WebApplication.Models
             get;
             set;
         }
+
+        public CompactTicket Ticket
+        {
+            get;
+            set;
+        }
     }
 
     public class GetEmployee
@@ -169,6 +194,12 @@ namespace WebApplication.Models
         }
 
         public CompactBranch Branch
+        {
+            get;
+            set;
+        }
+
+        public CompactTicket Ticket
         {
             get;
             set;

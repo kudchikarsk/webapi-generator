@@ -58,6 +58,8 @@ namespace WebApplication.DependencyResolution
                 cfg.CreateMap<Department, CompactDepartment>();
                 cfg.CreateMap<Branch, GetBranch>();
                 cfg.CreateMap<Branch, CompactBranch>();
+                cfg.CreateMap<Ticket, GetTicket>();
+                cfg.CreateMap<Ticket, CompactTicket>();
             }
 
             );

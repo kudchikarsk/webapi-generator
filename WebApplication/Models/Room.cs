@@ -20,6 +20,12 @@ namespace WebApplication.Models
             set;
         }
 
+        public Int32 Capacity
+        {
+            get;
+            set;
+        }
+
         public Company Company
         {
             get;
@@ -39,13 +45,14 @@ namespace WebApplication.Models
         public static Room Create(CreateRoom value)
         {
             return new Room()
-            {Id = value.Id, Name = value.Name, CompanyId = value.Company.Id, };
+            {Id = value.Id, Name = value.Name, Capacity = value.Capacity, CompanyId = value.Company.Id, };
         }
 
         public void Update(UpdateRoom value)
         {
             Id = value.Id;
             Name = value.Name;
+            Capacity = value.Capacity;
             CompanyId = value.Company.Id;
         }
     }
@@ -59,6 +66,12 @@ namespace WebApplication.Models
         }
 
         public String Name
+        {
+            get;
+            set;
+        }
+
+        public Int32 Capacity
         {
             get;
             set;
@@ -85,6 +98,12 @@ namespace WebApplication.Models
             set;
         }
 
+        public Int32 Capacity
+        {
+            get;
+            set;
+        }
+
         public CompactCompany Company
         {
             get;
@@ -106,6 +125,12 @@ namespace WebApplication.Models
             set;
         }
 
+        public Int32 Capacity
+        {
+            get;
+            set;
+        }
+
         public CompactCompany Company
         {
             get;
@@ -122,6 +147,12 @@ namespace WebApplication.Models
         }
 
         public String Name
+        {
+            get;
+            set;
+        }
+
+        public Int32 Capacity
         {
             get;
             set;

@@ -22,17 +22,19 @@ namespace EdmxParser
         {
             
             var value = xElement.Attribute(name).Value;
-            
+
             if (typeof(TOutput).Equals(typeof(bool)))
                 return (TOutput)(object)Convert.ToBoolean(value);
             else if (typeof(TOutput).Equals(typeof(int)))
                 return (TOutput)(object)Convert.ToInt32(value);
             else if (typeof(TOutput).Equals(typeof(long)))
                 return (TOutput)(object)Convert.ToInt64(value);
-            else if (typeof(TOutput).Equals(typeof(decimal)))
-                return (TOutput)(object)Convert.ToDecimal(value);
+            else if (typeof(TOutput).Equals(typeof(float)))
+                return (TOutput)(object)Convert.ToSingle(value);
             else if (typeof(TOutput).Equals(typeof(double)))
                 return (TOutput)(object)Convert.ToDouble(value);
+            else if (typeof(TOutput).Equals(typeof(decimal)))
+                return (TOutput)(object)Convert.ToDecimal(value);
             else if (typeof(TOutput).Equals(typeof(DateTime)))
                 return (TOutput)(object)Convert.ToDateTime(value);
 
