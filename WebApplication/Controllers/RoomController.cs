@@ -20,7 +20,7 @@ namespace WebApplication.Controllers
     {
         protected readonly IRepository<Room> repository;
         protected readonly Mapper mapper;
-        private string includes;
+        private string includes = "Company,Events,";
         public RoomController(IRepository<Room> repository, Mapper mapper)
         {
             this.repository = repository;

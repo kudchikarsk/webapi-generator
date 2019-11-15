@@ -20,7 +20,7 @@ namespace WebApplication.Controllers
     {
         protected readonly IRepository<Department> repository;
         protected readonly Mapper mapper;
-        private string includes;
+        private string includes = "ApplicationUsers,";
         public DepartmentController(IRepository<Department> repository, Mapper mapper)
         {
             this.repository = repository;

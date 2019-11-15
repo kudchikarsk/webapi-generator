@@ -150,7 +150,6 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Controllers\RoomController.cs" />
-    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Models\Branch.cs" />

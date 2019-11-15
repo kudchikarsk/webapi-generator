@@ -31,7 +31,8 @@ namespace Generator.ControllerGenerator
                 EntityName = entity.Name,
                 KeyDataType = entity.Properties.First(e=>e.Name == "Id").Type,
                 IsUserEntity = entity.NavigationProperties.Any(p=>p.Name == "ApplicationUser" && p.Multiplicity=="1"),
-                entity.Properties
+                entity.Properties,
+                NavProperties = entity.NavigationProperties
             });
             result = ArrangeUsingRoslyn(result);
             var csu = new CodeSnippetCompileUnit(result);

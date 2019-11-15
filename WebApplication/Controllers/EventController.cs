@@ -20,7 +20,7 @@ namespace WebApplication.Controllers
     {
         protected readonly IRepository<Event> repository;
         protected readonly Mapper mapper;
-        private string includes;
+        private string includes = "Room,ApplicationUser,";
         public EventController(IRepository<Event> repository, Mapper mapper)
         {
             this.repository = repository;

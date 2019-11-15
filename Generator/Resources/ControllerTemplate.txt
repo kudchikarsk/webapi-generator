@@ -33,7 +33,7 @@ namespace WebApplication.Controllers
     {
         protected readonly IRepository<{{ entity_name }}> repository;
         protected readonly Mapper mapper;
-		private string includes;
+		private string includes = "{{for property in nav_properties }}{{property.name}},{{end}}";
 
         public {{ entity_name }}Controller(
             IRepository<{{ entity_name }}> repository, 
