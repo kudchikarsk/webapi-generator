@@ -44,8 +44,6 @@ namespace WebApplication.DependencyResolution {
             For(typeof(IRepository<>)).Use(typeof(BaseRepository<>));
 
             var config = new MapperConfiguration(cfg => {
-				cfg.CreateMap<ApplicationUser, GetUser>();
-                cfg.CreateMap<ApplicationUser, CompactUser>();
                 {{ for entity in entities }}
 				cfg.CreateMap<{{entity.name}}, Get{{entity.name}}>();
                 cfg.CreateMap<{{entity.name}}, Compact{{entity.name}}>();

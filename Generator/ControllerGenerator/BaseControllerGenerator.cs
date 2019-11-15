@@ -6,6 +6,7 @@ using Scriban;
 using System;
 using System.CodeDom;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using static Generator.CodeDomHelper;
@@ -26,7 +27,12 @@ namespace Generator.ControllerGenerator
             string templateText = ControllerGeneratorResource.ControllerTemplate; ;
 
             var template = Template.Parse(templateText);
-            var result = template.Render(new { EntityName = entity.Name });
+            var result = template.Render(new {
+                EntityName = entity.Name,
+                KeyDataType = entity.Properties.First(e=>e.Name == "Id").Type,
+                IsUserEntity = entity.NavigationProperties.Any(p=>p.Name == "ApplicationUser" && p.Multiplicity=="1"),
+                entity.Properties
+            });
             result = ArrangeUsingRoslyn(result);
             var csu = new CodeSnippetCompileUnit(result);
 

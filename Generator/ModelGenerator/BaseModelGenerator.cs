@@ -24,7 +24,12 @@ namespace Generator.ModelGenerator
             string templateText = ModelGeneratorResource.ModelTemplate;
 
             var template = Template.Parse(templateText);
-            var result = template.Render(new { EntityName = entity.Name, entity.Properties, NavProperties = entity.NavigationProperties });
+            var result = template.Render(new {
+                EntityName = entity.Name,
+                entity.Properties,
+                NavProperties = entity.NavigationProperties,
+                IsUserEntity = entity.NavigationProperties.Any(p => p.Name == "ApplicationUser" && p.Multiplicity == "1")
+            });
             result = ArrangeUsingRoslyn(result);
             var csu = new CodeSnippetCompileUnit(result);
 

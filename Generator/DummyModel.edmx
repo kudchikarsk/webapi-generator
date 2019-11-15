@@ -19,25 +19,29 @@
             <End Role="Company" EntitySet="Companies" />
             <End Role="Room" EntitySet="Rooms" />
           </AssociationSet>
-          <EntitySet Name="Employees" EntityType="DummyModel.Employee" />
-          <AssociationSet Name="CompanyEmployee" Association="DummyModel.CompanyEmployee">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
           <EntitySet Name="Departments" EntityType="DummyModel.Department" />
-          <AssociationSet Name="DepartmentEmployee" Association="DummyModel.DepartmentEmployee">
-            <End Role="Department" EntitySet="Departments" />
-            <End Role="Employee" EntitySet="Employees" />
-          </AssociationSet>
           <EntitySet Name="Branches" EntityType="DummyModel.Branch" />
-          <AssociationSet Name="BranchEmployee" Association="DummyModel.BranchEmployee">
-            <End Role="Branch" EntitySet="Branches" />
-            <End Role="Employee" EntitySet="Employees" />
+          <EntitySet Name="ApplicationUsers" EntityType="DummyModel.ApplicationUser" />
+          <AssociationSet Name="CompanyApplicationUser" Association="DummyModel.CompanyApplicationUser">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
           </AssociationSet>
-          <EntitySet Name="Tickets" EntityType="DummyModel.Ticket" />
-          <AssociationSet Name="TicketEmployee" Association="DummyModel.TicketEmployee">
-            <End Role="Ticket" EntitySet="Tickets" />
-            <End Role="Employee" EntitySet="Employees" />
+          <AssociationSet Name="DepartmentApplicationUser" Association="DummyModel.DepartmentApplicationUser">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+          </AssociationSet>
+          <AssociationSet Name="BranchApplicationUser" Association="DummyModel.BranchApplicationUser">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+          </AssociationSet>
+          <EntitySet Name="Events" EntityType="DummyModel.Event" />
+          <AssociationSet Name="RoomEvent" Association="DummyModel.RoomEvent">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUserEvent" Association="DummyModel.ApplicationUserEvent">
+            <End Role="ApplicationUser" EntitySet="ApplicationUsers" />
+            <End Role="Event" EntitySet="Events" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Company">
@@ -47,7 +51,7 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="Rooms" Relationship="DummyModel.CompanyRoom" FromRole="Company" ToRole="Room" />
-          <NavigationProperty Name="Employees" Relationship="DummyModel.CompanyEmployee" FromRole="Company" ToRole="Employee" />
+          <NavigationProperty Name="ApplicationUsers" Relationship="DummyModel.CompanyApplicationUser" FromRole="Company" ToRole="ApplicationUser" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -57,60 +61,66 @@
           <NavigationProperty Name="Company" Relationship="DummyModel.CompanyRoom" FromRole="Room" ToRole="Company" />
           <Property Name="Name" Type="String" Nullable="false" />
           <Property Name="Capacity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Events" Relationship="DummyModel.RoomEvent" FromRole="Room" ToRole="Event" />
         </EntityType>
         <Association Name="CompanyRoom">
           <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
           <End Type="DummyModel.Room" Role="Room" Multiplicity="*" />
-        </Association>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Company" Relationship="DummyModel.CompanyEmployee" FromRole="Employee" ToRole="Company" />
-          <Property Name="FirstName" Type="String" Nullable="false" />
-          <NavigationProperty Name="Department" Relationship="DummyModel.DepartmentEmployee" FromRole="Employee" ToRole="Department" />
-          <NavigationProperty Name="Branch" Relationship="DummyModel.BranchEmployee" FromRole="Employee" ToRole="Branch" />
-          <NavigationProperty Name="Ticket" Relationship="DummyModel.TicketEmployee" FromRole="Employee" ToRole="Ticket" />
-        </EntityType>
-        <Association Name="CompanyEmployee">
-          <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
         </Association>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Employees" Relationship="DummyModel.DepartmentEmployee" FromRole="Department" ToRole="Employee" />
           <Property Name="Name" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ApplicationUsers" Relationship="DummyModel.DepartmentApplicationUser" FromRole="Department" ToRole="ApplicationUser" />
         </EntityType>
-        <Association Name="DepartmentEmployee">
-          <End Type="DummyModel.Department" Role="Department" Multiplicity="1" />
-          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
-        </Association>
         <EntityType Name="Branch">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Employees" Relationship="DummyModel.BranchEmployee" FromRole="Branch" ToRole="Employee" />
           <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="ApplicationUsers" Relationship="DummyModel.BranchApplicationUser" FromRole="Branch" ToRole="ApplicationUser" />
         </EntityType>
-        <Association Name="BranchEmployee">
-          <End Type="DummyModel.Branch" Role="Branch" Multiplicity="1" />
-          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="*" />
-        </Association>
-        <EntityType Name="Ticket">
+        <EntityType Name="ApplicationUser">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Employee" Relationship="DummyModel.TicketEmployee" FromRole="Ticket" ToRole="Employee" />
+          <Property Name="Id" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Company" Relationship="DummyModel.CompanyApplicationUser" FromRole="ApplicationUser" ToRole="Company" />
+          <NavigationProperty Name="Department" Relationship="DummyModel.DepartmentApplicationUser" FromRole="ApplicationUser" ToRole="Department" />
+          <NavigationProperty Name="Branch" Relationship="DummyModel.BranchApplicationUser" FromRole="ApplicationUser" ToRole="Branch" />
+          <NavigationProperty Name="Events" Relationship="DummyModel.ApplicationUserEvent" FromRole="ApplicationUser" ToRole="Event" />
         </EntityType>
-        <Association Name="TicketEmployee">
-          <End Type="DummyModel.Ticket" Role="Ticket" Multiplicity="1" />
-          <End Type="DummyModel.Employee" Role="Employee" Multiplicity="1" />
+        <Association Name="CompanyApplicationUser">
+          <End Type="DummyModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="DummyModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
+        </Association>
+        <Association Name="DepartmentApplicationUser">
+          <End Type="DummyModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="DummyModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
+        </Association>
+        <Association Name="BranchApplicationUser">
+          <End Type="DummyModel.Branch" Role="Branch" Multiplicity="1" />
+          <End Type="DummyModel.ApplicationUser" Role="ApplicationUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Room" Relationship="DummyModel.RoomEvent" FromRole="Event" ToRole="Room" />
+          <NavigationProperty Name="ApplicationUser" Relationship="DummyModel.ApplicationUserEvent" FromRole="Event" ToRole="ApplicationUser" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <Association Name="RoomEvent">
+          <End Type="DummyModel.Room" Role="Room" Multiplicity="1" />
+          <End Type="DummyModel.Event" Role="Event" Multiplicity="*" />
+        </Association>
+        <Association Name="ApplicationUserEvent">
+          <End Type="DummyModel.ApplicationUser" Role="ApplicationUser" Multiplicity="1" />
+          <End Type="DummyModel.Event" Role="Event" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>

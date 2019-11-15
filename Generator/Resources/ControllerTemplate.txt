@@ -1,3 +1,15 @@
+{{func parse_data_type
+   case $0
+      when "Int32"
+          ret "int"
+      when "Int64"
+          ret "long"
+	  when "String"
+          ret "string"
+      else
+          ret $0
+    end
+end}}
 using AutoMapper;
 using Microsoft.AspNet.Identity;
 using System;
@@ -41,7 +53,13 @@ namespace WebApplication.Controllers
 
 			var likeExpression = string.Format("%{0}%", query);
 			Expression<Func<{{ entity_name }}, bool>> filter = e=>
-			query == null || query == "null";
+			(query == null || query == "null"
+			{{for property in properties}}
+				{{ if property.type =="String" }}
+					|| DbFunctions.Like(e.{{property.name}},likeExpression)			
+				{{ end }}	
+			{{end}}
+			);
             var result = await repository.CreatePagedResults
             (
 			filter, 
@@ -86,14 +104,20 @@ namespace WebApplication.Controllers
         {
 			var likeExpression = string.Format("%{0}%", searchTerm);
             Expression<Func<{{ entity_name }}, bool>> searchExpression = e=>
-			searchTerm == null || searchTerm == "null";
+			(searchTerm == null || searchTerm == "null"
+			{{for property in properties}}
+				{{ if property.type =="String" }}
+					|| DbFunctions.Like(e.{{property.name}},likeExpression)			
+				{{ end }}
+			{{end}}
+			);
 
             var employees = repository.Get(searchExpression).Take(20).ToList();
             var employeesVM = mapper.Map<List<Compact{{ entity_name }}>>(employees);
             return Ok<IEnumerable<Compact{{ entity_name }}>>(employeesVM);
         }
         
-        public virtual IHttpActionResult Get(long id)
+        public virtual IHttpActionResult Get({{key_data_type | parse_data_type}} id)
         {
             var model = repository.Get(e => e.Id == id, includeProperties: includes).SingleOrDefault();
             var dto = mapper.Map<Get{{ entity_name }}>(model);
@@ -111,7 +135,7 @@ namespace WebApplication.Controllers
             {{ entity_name }} model;
             try
             {
-                {{ if isUserEntity }}
+                {{ if is_user_entity }}
 					model = {{ entity_name }}.Create(value,User.Identity.GetUserId());
 				{{ else }}
 					model = {{ entity_name }}.Create(value);
@@ -128,7 +152,7 @@ namespace WebApplication.Controllers
         }
         
 
-        public virtual IHttpActionResult Put(long id, [FromBody]Update{{ entity_name }} value)
+        public virtual IHttpActionResult Put({{key_data_type | parse_data_type}} id, [FromBody]Update{{ entity_name }} value)
         {
             if (!ModelState.IsValid)
             {
@@ -139,7 +163,7 @@ namespace WebApplication.Controllers
          
             try
             {
-                {{ if isUserEntity }}
+                {{ if is_user_entity }}
 					model.Update(value,User.Identity.GetUserId());
 				{{ else }}
 					model.Update(value);
@@ -155,7 +179,7 @@ namespace WebApplication.Controllers
         }
 
         
-        public virtual IHttpActionResult Delete(long id)
+        public virtual IHttpActionResult Delete({{key_data_type | parse_data_type}} id)
         {
             var model = repository.GetByID(id);            
             if (model == null) return NotFound();

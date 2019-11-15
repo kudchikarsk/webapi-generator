@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApplication;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace WebApplication.Models
 {
-    public class Employee : Entity<long>
+    public class ApplicationUser : IdentityUser
     {
-        public Int32 Id
-        {
-            get;
-            set;
-        }
-
-        public String FirstName
+        public string Id
         {
             get;
             set;
@@ -38,7 +37,7 @@ namespace WebApplication.Models
             set;
         }
 
-        public long DepartmentId
+        public int DepartmentId
         {
             get;
             set;
@@ -50,54 +49,102 @@ namespace WebApplication.Models
             set;
         }
 
-        public long BranchId
+        public int BranchId
         {
             get;
             set;
         }
 
-        public Ticket Ticket
+        public ICollection<Event> Events
         {
             get;
             set;
         }
 
-        public long TicketId
-        {
-            get;
-            set;
-        }
-
-        public Employee()
+        public ApplicationUser()
         {
         }
 
-        public static Employee Create(CreateEmployee value)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
-            return new Employee()
-            {Id = value.Id, FirstName = value.FirstName, CompanyId = value.Company.Id, DepartmentId = value.Department.Id, BranchId = value.Branch.Id, TicketId = value.Ticket.Id, };
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            // Add custom user claims here
+            return userIdentity;
         }
 
-        public void Update(UpdateEmployee value)
+        public static ApplicationUser Create(CreateApplicationUser value)
+        {
+            return new ApplicationUser()
+            {Id = value.Id, CompanyId = value.Company.Id, DepartmentId = value.Department.Id, BranchId = value.Branch.Id, };
+        }
+
+        public void Update(UpdateApplicationUser value)
         {
             Id = value.Id;
-            FirstName = value.FirstName;
             CompanyId = value.Company.Id;
             DepartmentId = value.Department.Id;
             BranchId = value.Branch.Id;
-            TicketId = value.Ticket.Id;
         }
     }
 
-    public class CreateEmployee
+    public class CreateApplicationUser
     {
-        public Int32 Id
+        public string Id
         {
             get;
             set;
         }
 
-        public String FirstName
+        public CompactCompany Company
+        {
+            get;
+            set;
+        }
+
+        public CompactDepartment Department
+        {
+            get;
+            set;
+        }
+
+        public CompactBranch Branch
+        {
+            get;
+            set;
+        }
+    }
+
+    public class UpdateApplicationUser
+    {
+        public string Id
+        {
+            get;
+            set;
+        }
+
+        public CompactCompany Company
+        {
+            get;
+            set;
+        }
+
+        public CompactDepartment Department
+        {
+            get;
+            set;
+        }
+
+        public CompactBranch Branch
+        {
+            get;
+            set;
+        }
+    }
+
+    public class GetApplicationUser
+    {
+        public string Id
         {
             get;
             set;
@@ -121,100 +168,16 @@ namespace WebApplication.Models
             set;
         }
 
-        public CompactTicket Ticket
+        public ICollection<CompactEvent> Events
         {
             get;
             set;
         }
     }
 
-    public class UpdateEmployee
+    public class CompactApplicationUser
     {
-        public Int32 Id
-        {
-            get;
-            set;
-        }
-
-        public String FirstName
-        {
-            get;
-            set;
-        }
-
-        public CompactCompany Company
-        {
-            get;
-            set;
-        }
-
-        public CompactDepartment Department
-        {
-            get;
-            set;
-        }
-
-        public CompactBranch Branch
-        {
-            get;
-            set;
-        }
-
-        public CompactTicket Ticket
-        {
-            get;
-            set;
-        }
-    }
-
-    public class GetEmployee
-    {
-        public Int32 Id
-        {
-            get;
-            set;
-        }
-
-        public String FirstName
-        {
-            get;
-            set;
-        }
-
-        public CompactCompany Company
-        {
-            get;
-            set;
-        }
-
-        public CompactDepartment Department
-        {
-            get;
-            set;
-        }
-
-        public CompactBranch Branch
-        {
-            get;
-            set;
-        }
-
-        public CompactTicket Ticket
-        {
-            get;
-            set;
-        }
-    }
-
-    public class CompactEmployee
-    {
-        public Int32 Id
-        {
-            get;
-            set;
-        }
-
-        public String FirstName
+        public string Id
         {
             get;
             set;

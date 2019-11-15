@@ -16,12 +16,12 @@ using WebApplication.Models;
 namespace WebApplication.Controllers
 {
     [Authorize]
-    public class TicketController : ApiController
+    public class ApplicationUserController : ApiController
     {
-        protected readonly IRepository<Ticket> repository;
+        protected readonly IRepository<ApplicationUser> repository;
         protected readonly Mapper mapper;
         private string includes;
-        public TicketController(IRepository<Ticket> repository, Mapper mapper)
+        public ApplicationUserController(IRepository<ApplicationUser> repository, Mapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
         public virtual async Task<IHttpActionResult> Get(int? page = null, int pageSize = 10, string orderBy = "Id", bool ascending = false, string query = null)
         {
             var likeExpression = string.Format("%{0}%", query);
-            Expression<Func<Ticket, bool>> filter = e => query == null || query == "null";
+            Expression<Func<ApplicationUser, bool>> filter = e => (query == null || query == "null" || DbFunctions.Like(e.Id, likeExpression));
             var result = await repository.CreatePagedResults(filter, page.Value, pageSize, orderBy, ascending, query);
             var mod = result.TotalNumberOfRecords % pageSize;
             var totalPageCount = (result.TotalNumberOfRecords / pageSize) + (mod == 0 ? 0 : 1);
@@ -40,7 +40,7 @@ namespace WebApplication.Controllers
             }
 
             );
-            var pagedResult = new PagedResults<CompactTicket>{Results = mapper.Map<List<CompactTicket>>(result.Results), PageNumber = page.Value, PageSize = pageSize, ResultCount = result.Results.Count, TotalNumberOfPages = totalPageCount, TotalNumberOfRecords = result.TotalNumberOfRecords, NextPageUrl = nextPageUrl};
+            var pagedResult = new PagedResults<CompactApplicationUser>{Results = mapper.Map<List<CompactApplicationUser>>(result.Results), PageNumber = page.Value, PageSize = pageSize, ResultCount = result.Results.Count, TotalNumberOfPages = totalPageCount, TotalNumberOfRecords = result.TotalNumberOfRecords, NextPageUrl = nextPageUrl};
             return Ok(pagedResult);
         }
 
@@ -48,30 +48,30 @@ namespace WebApplication.Controllers
         public virtual IHttpActionResult GetSuggestions(string searchTerm)
         {
             var likeExpression = string.Format("%{0}%", searchTerm);
-            Expression<Func<Ticket, bool>> searchExpression = e => searchTerm == null || searchTerm == "null";
+            Expression<Func<ApplicationUser, bool>> searchExpression = e => (searchTerm == null || searchTerm == "null" || DbFunctions.Like(e.Id, likeExpression));
             var employees = repository.Get(searchExpression).Take(20).ToList();
-            var employeesVM = mapper.Map<List<CompactTicket>>(employees);
-            return Ok<IEnumerable<CompactTicket>>(employeesVM);
+            var employeesVM = mapper.Map<List<CompactApplicationUser>>(employees);
+            return Ok<IEnumerable<CompactApplicationUser>>(employeesVM);
         }
 
-        public virtual IHttpActionResult Get(long id)
+        public virtual IHttpActionResult Get(string id)
         {
             var model = repository.Get(e => e.Id == id, includeProperties: includes).SingleOrDefault();
-            var dto = mapper.Map<GetTicket>(model);
-            return Ok<GetTicket>(dto);
+            var dto = mapper.Map<GetApplicationUser>(model);
+            return Ok<GetApplicationUser>(dto);
         }
 
-        public virtual IHttpActionResult Post([FromBody] CreateTicket value)
+        public virtual IHttpActionResult Post([FromBody] CreateApplicationUser value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Ticket model;
+            ApplicationUser model;
             try
             {
-                model = Ticket.Create(value);
+                model = ApplicationUser.Create(value);
             }
             catch (Exception e)
             {
@@ -79,18 +79,18 @@ namespace WebApplication.Controllers
             }
 
             repository.Insert(model);
-            var dto = mapper.Map<GetTicket>(model);
-            return Created(nameof(Ticket) + "/" + dto.Id, dto);
+            var dto = mapper.Map<GetApplicationUser>(model);
+            return Created(nameof(ApplicationUser) + "/" + dto.Id, dto);
         }
 
-        public virtual IHttpActionResult Put(long id, [FromBody] UpdateTicket value)
+        public virtual IHttpActionResult Put(string id, [FromBody] UpdateApplicationUser value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Ticket model = repository.GetByID(id);
+            ApplicationUser model = repository.GetByID(id);
             try
             {
                 model.Update(value);
@@ -104,7 +104,7 @@ namespace WebApplication.Controllers
             return Content(HttpStatusCode.NoContent, "");
         }
 
-        public virtual IHttpActionResult Delete(long id)
+        public virtual IHttpActionResult Delete(string id)
         {
             var model = repository.GetByID(id);
             if (model == null)

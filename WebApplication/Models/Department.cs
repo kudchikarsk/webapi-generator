@@ -8,19 +8,19 @@ namespace WebApplication.Models
 {
     public class Department : Entity<long>
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public Int32 Name
+        public int Name
         {
             get;
             set;
         }
 
-        public ICollection<Employee> Employees
+        public ICollection<ApplicationUser> ApplicationUsers
         {
             get;
             set;
@@ -45,13 +45,13 @@ namespace WebApplication.Models
 
     public class CreateDepartment
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public Int32 Name
+        public int Name
         {
             get;
             set;
@@ -60,13 +60,13 @@ namespace WebApplication.Models
 
     public class UpdateDepartment
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public Int32 Name
+        public int Name
         {
             get;
             set;
@@ -75,19 +75,19 @@ namespace WebApplication.Models
 
     public class GetDepartment
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public Int32 Name
+        public int Name
         {
             get;
             set;
         }
 
-        public ICollection<CompactEmployee> Employees
+        public ICollection<CompactApplicationUser> ApplicationUsers
         {
             get;
             set;
@@ -96,13 +96,13 @@ namespace WebApplication.Models
 
     public class CompactDepartment
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public Int32 Name
+        public int Name
         {
             get;
             set;

@@ -24,17 +24,19 @@
 
     public class NavigationProperty : BaseProperty
     {
-        public NavigationProperty(string name, string fromRole, string toRole, string relationship, string multiplicity) : base(name)
+        public NavigationProperty(string name, string fromRole, string toRole, string relationship, string multiplicity, string toRoleKeyType) : base(name)
         {
             FromRole = fromRole;
             ToRole = toRole;
             Relationship = relationship;
             Multiplicity = multiplicity;
+            ToRoleKeyType = toRoleKeyType;
         }
 
         public string FromRole { get; } 
         public string ToRole   { get; }
         public string Relationship { get; }
         public string Multiplicity { get; }
+        public string ToRoleKeyType { get; }
     }
 }

@@ -8,13 +8,13 @@ namespace WebApplication.Models
 {
     public class Company : Entity<long>
     {
-        public Int64 Id
+        public long Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
@@ -26,7 +26,7 @@ namespace WebApplication.Models
             set;
         }
 
-        public ICollection<Employee> Employees
+        public ICollection<ApplicationUser> ApplicationUsers
         {
             get;
             set;
@@ -51,13 +51,13 @@ namespace WebApplication.Models
 
     public class CreateCompany
     {
-        public Int64 Id
+        public long Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
@@ -66,13 +66,13 @@ namespace WebApplication.Models
 
     public class UpdateCompany
     {
-        public Int64 Id
+        public long Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
@@ -81,13 +81,13 @@ namespace WebApplication.Models
 
     public class GetCompany
     {
-        public Int64 Id
+        public long Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
@@ -99,7 +99,7 @@ namespace WebApplication.Models
             set;
         }
 
-        public ICollection<CompactEmployee> Employees
+        public ICollection<CompactApplicationUser> ApplicationUsers
         {
             get;
             set;
@@ -108,13 +108,13 @@ namespace WebApplication.Models
 
     public class CompactCompany
     {
-        public Int64 Id
+        public long Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;

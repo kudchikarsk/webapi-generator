@@ -6,7 +6,7 @@ using WebApplication;
 
 namespace WebApplication.Models
 {
-    public class Room : Entity<long>
+    public class Event : Entity<long>
     {
         public long Id
         {
@@ -20,50 +20,50 @@ namespace WebApplication.Models
             set;
         }
 
-        public int Capacity
+        public Room Room
         {
             get;
             set;
         }
 
-        public Company Company
+        public long RoomId
         {
             get;
             set;
         }
 
-        public long CompanyId
+        public ApplicationUser ApplicationUser
         {
             get;
             set;
         }
 
-        public ICollection<Event> Events
+        public string ApplicationUserId
         {
             get;
             set;
         }
 
-        public Room()
+        public Event()
         {
         }
 
-        public static Room Create(CreateRoom value)
+        public static Event Create(CreateEvent value, string userId)
         {
-            return new Room()
-            {Id = value.Id, Name = value.Name, Capacity = value.Capacity, CompanyId = value.Company.Id, };
+            return new Event()
+            {Id = value.Id, Name = value.Name, RoomId = value.Room.Id, ApplicationUserId = userId, };
         }
 
-        public void Update(UpdateRoom value)
+        public void Update(UpdateEvent value, string userId)
         {
             Id = value.Id;
             Name = value.Name;
-            Capacity = value.Capacity;
-            CompanyId = value.Company.Id;
+            RoomId = value.Room.Id;
+            ApplicationUserId = userId;
         }
     }
 
-    public class CreateRoom
+    public class CreateEvent
     {
         public long Id
         {
@@ -77,20 +77,20 @@ namespace WebApplication.Models
             set;
         }
 
-        public int Capacity
+        public CompactRoom Room
         {
             get;
             set;
         }
 
-        public CompactCompany Company
+        public CompactApplicationUser ApplicationUser
         {
             get;
             set;
         }
     }
 
-    public class UpdateRoom
+    public class UpdateEvent
     {
         public long Id
         {
@@ -104,20 +104,20 @@ namespace WebApplication.Models
             set;
         }
 
-        public int Capacity
+        public CompactRoom Room
         {
             get;
             set;
         }
 
-        public CompactCompany Company
+        public CompactApplicationUser ApplicationUser
         {
             get;
             set;
         }
     }
 
-    public class GetRoom
+    public class GetEvent
     {
         public long Id
         {
@@ -131,26 +131,20 @@ namespace WebApplication.Models
             set;
         }
 
-        public int Capacity
+        public CompactRoom Room
         {
             get;
             set;
         }
 
-        public CompactCompany Company
-        {
-            get;
-            set;
-        }
-
-        public ICollection<CompactEvent> Events
+        public CompactApplicationUser ApplicationUser
         {
             get;
             set;
         }
     }
 
-    public class CompactRoom
+    public class CompactEvent
     {
         public long Id
         {
@@ -159,12 +153,6 @@ namespace WebApplication.Models
         }
 
         public string Name
-        {
-            get;
-            set;
-        }
-
-        public int Capacity
         {
             get;
             set;

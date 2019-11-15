@@ -46,20 +46,18 @@ namespace WebApplication.DependencyResolution
             For(typeof(IRepository<>)).Use(typeof(BaseRepository<>));
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ApplicationUser, GetUser>();
-                cfg.CreateMap<ApplicationUser, CompactUser>();
                 cfg.CreateMap<Company, GetCompany>();
                 cfg.CreateMap<Company, CompactCompany>();
                 cfg.CreateMap<Room, GetRoom>();
                 cfg.CreateMap<Room, CompactRoom>();
-                cfg.CreateMap<Employee, GetEmployee>();
-                cfg.CreateMap<Employee, CompactEmployee>();
                 cfg.CreateMap<Department, GetDepartment>();
                 cfg.CreateMap<Department, CompactDepartment>();
                 cfg.CreateMap<Branch, GetBranch>();
                 cfg.CreateMap<Branch, CompactBranch>();
-                cfg.CreateMap<Ticket, GetTicket>();
-                cfg.CreateMap<Ticket, CompactTicket>();
+                cfg.CreateMap<ApplicationUser, GetApplicationUser>();
+                cfg.CreateMap<ApplicationUser, CompactApplicationUser>();
+                cfg.CreateMap<Event, GetEvent>();
+                cfg.CreateMap<Event, CompactEvent>();
             }
 
             );

@@ -8,19 +8,19 @@ namespace WebApplication.Models
 {
     public class Branch : Entity<long>
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
         }
 
-        public ICollection<Employee> Employees
+        public ICollection<ApplicationUser> ApplicationUsers
         {
             get;
             set;
@@ -45,13 +45,13 @@ namespace WebApplication.Models
 
     public class CreateBranch
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
@@ -60,13 +60,13 @@ namespace WebApplication.Models
 
     public class UpdateBranch
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
@@ -75,19 +75,19 @@ namespace WebApplication.Models
 
     public class GetBranch
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;
         }
 
-        public ICollection<CompactEmployee> Employees
+        public ICollection<CompactApplicationUser> ApplicationUsers
         {
             get;
             set;
@@ -96,13 +96,13 @@ namespace WebApplication.Models
 
     public class CompactBranch
     {
-        public Int32 Id
+        public int Id
         {
             get;
             set;
         }
 
-        public String Name
+        public string Name
         {
             get;
             set;

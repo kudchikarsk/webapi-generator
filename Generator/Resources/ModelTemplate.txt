@@ -1,15 +1,39 @@
+{{func parse_data_type
+   case $0
+      when "Int32"
+          ret "int"
+      when "Int64"
+          ret "long"
+	  when "String"
+          ret "string"
+      else
+          ret $0
+    end
+end}}
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebApplication;
+{{ if entity_name == "ApplicationUser" }}
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+{{ end }}
 
 namespace WebApplication.Models
 {
-    public class {{ entity_name }} :Entity<long>
+    public class {{ entity_name }} :
+	{{ if entity_name =="ApplicationUser" }}
+	IdentityUser
+	{{else}}	
+	Entity<long>
+	{{end}}
     {
         {{ for $property in properties }}
-		public {{ $property.type }} {{ $property.name }} { get; set; }
+		public {{ $property.type | parse_data_type}} {{ $property.name }} { get; set; }
 		{{ end }}
 
 		{{ for $property in nav_properties }}
@@ -17,7 +41,7 @@ namespace WebApplication.Models
 		public ICollection<{{ $property.to_role }}> {{ $property.name }} { get; set; }
 			{{ else }}
 		public {{ $property.to_role }} {{ $property.name }} { get; set; }
-		public long {{ $property.name }}Id { get; set; }
+		public {{$property.to_role_key_type | parse_data_type}} {{ $property.name }}Id { get; set; }
 			{{ end }}
 		{{ end }}
 
@@ -26,18 +50,36 @@ namespace WebApplication.Models
 			
         }
 
-        public static {{ entity_name }} Create(Create{{ entity_name }} value)
+		{{ if entity_name == "ApplicationUser" }}
+		public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            // Add custom user claims here
+            return userIdentity;
+        }
+		{{ end }}
+
+        public static {{ entity_name }} Create(Create{{ entity_name }} value
+		{{if is_user_entity}}
+		, string userId
+		{{end}}
+		)
         {
 
             return new {{ entity_name }}()
             {
 				{{ for $property in properties }}
-			{{ $property.name }} = value.{{ $property.name }},
+					{{ $property.name }} = value.{{ $property.name }},
 				{{ end }}
 
 				{{ for $property in nav_properties }}
 					{{ if $property.multiplicity != "*"}}
-			{{ $property.name }}Id = value.{{ $property.name }}.Id,
+						{{ if $property.name == "ApplicationUser" && is_user_entity }}
+							{{ $property.name }}Id = userId,
+						{{else}}
+							{{ $property.name }}Id = value.{{ $property.name }}.Id,
+						{{end}}
 					{{ end }}
 				{{ end }}
 
@@ -45,16 +87,24 @@ namespace WebApplication.Models
             
         }
 
-        public void Update(Update{{ entity_name }} value)
+        public void Update(Update{{ entity_name }} value
+		{{if is_user_entity}}
+		, string userId
+		{{end}}
+		)
         {
 
 				{{ for $property in properties }}
-			{{ $property.name }} = value.{{ $property.name }};
+					{{ $property.name }} = value.{{ $property.name }};
 				{{ end }}
 
 				{{ for $property in nav_properties }}
 					{{ if $property.multiplicity != "*"}}
-			{{ $property.name }}Id = value.{{ $property.name }}.Id;
+						{{ if $property.name == "ApplicationUser" && is_user_entity }}
+							{{ $property.name }}Id = userId;
+						{{else}}
+							{{ $property.name }}Id = value.{{ $property.name }}.Id;
+						{{end}}
 					{{ end }}
 				{{ end }}
 
@@ -69,12 +119,12 @@ namespace WebApplication.Models
     public class Create{{ entity_name }}
     {
 		{{ for $property in properties }}
-		public {{ $property.type }} {{ $property.name }} { get; set; }
+			public {{ $property.type | parse_data_type }} {{ $property.name }} { get; set; }
 		{{ end }}
 
 		{{ for $property in nav_properties }}
 			{{ if $property.multiplicity != "*"}}
-		public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
+				public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
 			{{ end }}
 		{{ end }}
     }
@@ -82,12 +132,12 @@ namespace WebApplication.Models
 	public class Update{{ entity_name }}
     {       
 		{{ for $property in properties }}
-		public {{ $property.type }} {{ $property.name }} { get; set; }
+			public {{ $property.type | parse_data_type}} {{ $property.name }} { get; set; }
 		{{ end }}
 
 		{{ for $property in nav_properties }}
 			{{ if $property.multiplicity != "*"}}
-		public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
+				public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
 			{{ end }}
 		{{ end }}
     }
@@ -95,15 +145,15 @@ namespace WebApplication.Models
 
     public class Get{{ entity_name }}
     {
-       {{ for $property in properties }}
-		public {{ $property.type }} {{ $property.name }} { get; set; }
+		{{ for $property in properties }}
+			public {{ $property.type | parse_data_type}} {{ $property.name }} { get; set; }
 		{{ end }}
 
 		{{ for $property in nav_properties }}
 			{{ if $property.multiplicity == "*"}}
-		public ICollection<Compact{{ $property.to_role }}> {{ $property.name }} { get; set; }
+				public ICollection<Compact{{ $property.to_role }}> {{ $property.name }} { get; set; }
 			{{ else }}
-		public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
+				public Compact{{ $property.to_role }} {{ $property.name }} { get; set; }
 			{{ end }}
 		{{ end }}
     }
@@ -111,7 +161,7 @@ namespace WebApplication.Models
     public class Compact{{ entity_name }}
     {
         {{ for $property in properties }}
-		public {{ $property.type }} {{ $property.name }} { get; set; }
+			public {{ $property.type | parse_data_type}} {{ $property.name }} { get; set; }
 		{{ end }}
     }
 

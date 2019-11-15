@@ -16,12 +16,12 @@ using WebApplication.Models;
 namespace WebApplication.Controllers
 {
     [Authorize]
-    public class CompanyController : ApiController
+    public class EventController : ApiController
     {
-        protected readonly IRepository<Company> repository;
+        protected readonly IRepository<Event> repository;
         protected readonly Mapper mapper;
         private string includes;
-        public CompanyController(IRepository<Company> repository, Mapper mapper)
+        public EventController(IRepository<Event> repository, Mapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
         public virtual async Task<IHttpActionResult> Get(int? page = null, int pageSize = 10, string orderBy = "Id", bool ascending = false, string query = null)
         {
             var likeExpression = string.Format("%{0}%", query);
-            Expression<Func<Company, bool>> filter = e => (query == null || query == "null" || DbFunctions.Like(e.Name, likeExpression));
+            Expression<Func<Event, bool>> filter = e => (query == null || query == "null" || DbFunctions.Like(e.Name, likeExpression));
             var result = await repository.CreatePagedResults(filter, page.Value, pageSize, orderBy, ascending, query);
             var mod = result.TotalNumberOfRecords % pageSize;
             var totalPageCount = (result.TotalNumberOfRecords / pageSize) + (mod == 0 ? 0 : 1);
@@ -40,7 +40,7 @@ namespace WebApplication.Controllers
             }
 
             );
-            var pagedResult = new PagedResults<CompactCompany>{Results = mapper.Map<List<CompactCompany>>(result.Results), PageNumber = page.Value, PageSize = pageSize, ResultCount = result.Results.Count, TotalNumberOfPages = totalPageCount, TotalNumberOfRecords = result.TotalNumberOfRecords, NextPageUrl = nextPageUrl};
+            var pagedResult = new PagedResults<CompactEvent>{Results = mapper.Map<List<CompactEvent>>(result.Results), PageNumber = page.Value, PageSize = pageSize, ResultCount = result.Results.Count, TotalNumberOfPages = totalPageCount, TotalNumberOfRecords = result.TotalNumberOfRecords, NextPageUrl = nextPageUrl};
             return Ok(pagedResult);
         }
 
@@ -48,30 +48,30 @@ namespace WebApplication.Controllers
         public virtual IHttpActionResult GetSuggestions(string searchTerm)
         {
             var likeExpression = string.Format("%{0}%", searchTerm);
-            Expression<Func<Company, bool>> searchExpression = e => (searchTerm == null || searchTerm == "null" || DbFunctions.Like(e.Name, likeExpression));
+            Expression<Func<Event, bool>> searchExpression = e => (searchTerm == null || searchTerm == "null" || DbFunctions.Like(e.Name, likeExpression));
             var employees = repository.Get(searchExpression).Take(20).ToList();
-            var employeesVM = mapper.Map<List<CompactCompany>>(employees);
-            return Ok<IEnumerable<CompactCompany>>(employeesVM);
+            var employeesVM = mapper.Map<List<CompactEvent>>(employees);
+            return Ok<IEnumerable<CompactEvent>>(employeesVM);
         }
 
         public virtual IHttpActionResult Get(long id)
         {
             var model = repository.Get(e => e.Id == id, includeProperties: includes).SingleOrDefault();
-            var dto = mapper.Map<GetCompany>(model);
-            return Ok<GetCompany>(dto);
+            var dto = mapper.Map<GetEvent>(model);
+            return Ok<GetEvent>(dto);
         }
 
-        public virtual IHttpActionResult Post([FromBody] CreateCompany value)
+        public virtual IHttpActionResult Post([FromBody] CreateEvent value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Company model;
+            Event model;
             try
             {
-                model = Company.Create(value);
+                model = Event.Create(value, User.Identity.GetUserId());
             }
             catch (Exception e)
             {
@@ -79,21 +79,21 @@ namespace WebApplication.Controllers
             }
 
             repository.Insert(model);
-            var dto = mapper.Map<GetCompany>(model);
-            return Created(nameof(Company) + "/" + dto.Id, dto);
+            var dto = mapper.Map<GetEvent>(model);
+            return Created(nameof(Event) + "/" + dto.Id, dto);
         }
 
-        public virtual IHttpActionResult Put(long id, [FromBody] UpdateCompany value)
+        public virtual IHttpActionResult Put(long id, [FromBody] UpdateEvent value)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            Company model = repository.GetByID(id);
+            Event model = repository.GetByID(id);
             try
             {
-                model.Update(value);
+                model.Update(value, User.Identity.GetUserId());
             }
             catch (Exception e)
             {

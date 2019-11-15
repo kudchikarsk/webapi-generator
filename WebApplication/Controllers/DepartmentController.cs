@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
         public virtual async Task<IHttpActionResult> Get(int? page = null, int pageSize = 10, string orderBy = "Id", bool ascending = false, string query = null)
         {
             var likeExpression = string.Format("%{0}%", query);
-            Expression<Func<Department, bool>> filter = e => query == null || query == "null";
+            Expression<Func<Department, bool>> filter = e => (query == null || query == "null");
             var result = await repository.CreatePagedResults(filter, page.Value, pageSize, orderBy, ascending, query);
             var mod = result.TotalNumberOfRecords % pageSize;
             var totalPageCount = (result.TotalNumberOfRecords / pageSize) + (mod == 0 ? 0 : 1);
@@ -48,13 +48,13 @@ namespace WebApplication.Controllers
         public virtual IHttpActionResult GetSuggestions(string searchTerm)
         {
             var likeExpression = string.Format("%{0}%", searchTerm);
-            Expression<Func<Department, bool>> searchExpression = e => searchTerm == null || searchTerm == "null";
+            Expression<Func<Department, bool>> searchExpression = e => (searchTerm == null || searchTerm == "null");
             var employees = repository.Get(searchExpression).Take(20).ToList();
             var employeesVM = mapper.Map<List<CompactDepartment>>(employees);
             return Ok<IEnumerable<CompactDepartment>>(employeesVM);
         }
 
-        public virtual IHttpActionResult Get(long id)
+        public virtual IHttpActionResult Get(int id)
         {
             var model = repository.Get(e => e.Id == id, includeProperties: includes).SingleOrDefault();
             var dto = mapper.Map<GetDepartment>(model);
@@ -83,7 +83,7 @@ namespace WebApplication.Controllers
             return Created(nameof(Department) + "/" + dto.Id, dto);
         }
 
-        public virtual IHttpActionResult Put(long id, [FromBody] UpdateDepartment value)
+        public virtual IHttpActionResult Put(int id, [FromBody] UpdateDepartment value)
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace WebApplication.Controllers
             return Content(HttpStatusCode.NoContent, "");
         }
 
-        public virtual IHttpActionResult Delete(long id)
+        public virtual IHttpActionResult Delete(int id)
         {
             var model = repository.GetByID(id);
             if (model == null)

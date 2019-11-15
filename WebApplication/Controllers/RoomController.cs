@@ -30,7 +30,7 @@ namespace WebApplication.Controllers
         public virtual async Task<IHttpActionResult> Get(int? page = null, int pageSize = 10, string orderBy = "Id", bool ascending = false, string query = null)
         {
             var likeExpression = string.Format("%{0}%", query);
-            Expression<Func<Room, bool>> filter = e => query == null || query == "null";
+            Expression<Func<Room, bool>> filter = e => (query == null || query == "null" || DbFunctions.Like(e.Name, likeExpression));
             var result = await repository.CreatePagedResults(filter, page.Value, pageSize, orderBy, ascending, query);
             var mod = result.TotalNumberOfRecords % pageSize;
             var totalPageCount = (result.TotalNumberOfRecords / pageSize) + (mod == 0 ? 0 : 1);
@@ -48,7 +48,7 @@ namespace WebApplication.Controllers
         public virtual IHttpActionResult GetSuggestions(string searchTerm)
         {
             var likeExpression = string.Format("%{0}%", searchTerm);
-            Expression<Func<Room, bool>> searchExpression = e => searchTerm == null || searchTerm == "null";
+            Expression<Func<Room, bool>> searchExpression = e => (searchTerm == null || searchTerm == "null" || DbFunctions.Like(e.Name, likeExpression));
             var employees = repository.Get(searchExpression).Take(20).ToList();
             var employeesVM = mapper.Map<List<CompactRoom>>(employees);
             return Ok<IEnumerable<CompactRoom>>(employeesVM);

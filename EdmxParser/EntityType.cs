@@ -10,13 +10,12 @@ namespace EdmxParser
             Name = name;
             Properties = properties;
             NavigationProperties = navigationProperties;
-            Associations = associations;
         }
 
         public string Name { get; }
         public IEnumerable<Property> Properties { get; }
         public IEnumerable<NavigationProperty> NavigationProperties { get; }
-        public IEnumerable<Association> Associations { get; }
+        
 
         public override string ToString()
         {
